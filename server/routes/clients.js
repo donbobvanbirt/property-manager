@@ -3,6 +3,25 @@ const router = express.Router();
 
 const Client = require('../models/Client');
 
+router.route('/:id')
+  .get((req, res) => {
+    Client.findById(req.params.id)
+      .then(client => res.send(client))
+      .catch(err => res.status(400).send(err))
+  })
+
+  .put((req, res) => {
+    Client.findOneAndUpdate({_id: req.params.id}, { $set: req.body })
+    .then( res.send('client updated') )
+    .catch(err => res.status(400).send(err))
+  })
+
+  .delete((req, res) => {
+    Client.remove({ _id: req.params.id })
+      .then( res.send('client deleted') )
+      .catch(err => res.status(400).send(err))
+  })
+
 router.route('/')
   .get((req, res) => {
     Client.find()
@@ -12,8 +31,8 @@ router.route('/')
 
   .post((req, res) => {
     Client.create(req.body)
-    .then(client => res.send(client))
-    .catch(err => res.status(400).send(err))
+      .then(client => res.send(client))
+      .catch(err => res.status(400).send(err))
   })
 
 module.exports = router;

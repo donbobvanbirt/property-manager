@@ -17,17 +17,27 @@ router.put('/:propId/addTenant/:clientId', (req, res) => {
 })
 
 
-router.get('/tenants', (req, res) => {
-  Property.find()
+
+router.route('/:id')
+  .get((req, res) => {
+    Property.findById(req.params.id)
     .populate('tenants')
     .then(properties => res.send(properties))
     .catch(err => res.status(400).send(err))
-})
+  })
 
-// router.route('/:id')
-//   .delete((req, res) => {
-//     Property
-//   })
+  .put((req, res) => {
+    Property.findOneAndUpdate({_id: req.params.id}, { $set: req.body })
+    .then( res.send('property updated') )
+    .catch(err => res.status(400).send(err))
+  })
+
+  .delete((req, res) => {
+    let { id } = req.params;
+    Property.remove({ _id: id })
+    .then( res.send('property deleted') )
+    .catch(err => res.status(400).send(err))
+  })
 
 router.route('/')
   .get((req, res) => {
