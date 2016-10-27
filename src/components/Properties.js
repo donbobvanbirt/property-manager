@@ -33,13 +33,18 @@ export default class Properties extends Component {
 
   submitNewProp (e) {
     e.preventDefault();
+    let { aptNum, rent, size, maxTenants } = this.refs;
     let propObj = {
-      apt: this.refs.aptNum.value,
-      rent: this.refs.rent.value,
-      bedrooms: this.refs.size.value,
-      maxTenants: this.refs.maxTenants.value
+      apt: aptNum.value,
+      rent: rent.value,
+      bedrooms: size.value,
+      maxTenants: maxTenants.value
     }
     PropertyActions.addNewProp(propObj);
+    aptNum.value = '';
+    rent.value = '';
+    size.value = '';
+    maxTenants.value = '';
   }
 
   render() {

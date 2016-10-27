@@ -7,6 +7,14 @@ const PropertyActions = {
 
   addNewProp(obj) {
     API.addNewProp(obj);
+  },
+
+  addNewClient(obj) {
+    API.addNewClient(obj);
+  },
+
+  getAllClients(obj) {
+    API.getAllClients(obj);
   }
 }
 
