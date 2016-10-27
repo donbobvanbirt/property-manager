@@ -1,9 +1,15 @@
 import React from 'react';
 import { render } from 'react-dom';
+import { Router, Route, IndexRoute, browserHistory } from 'react-router'
 
 import Layout from './components/Layout';
+import Properties from './components/Properties';
 
 render(
-  <Layout/>,
+  <Router history = {browserHistory}>
+    <Route path = '/' component={Layout} >
+      <Route path = '/properties' component={Properties} />
+    </Route>
+  </Router>,
   document.getElementById('root')
 );

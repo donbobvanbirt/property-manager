@@ -1,16 +1,16 @@
 import { EventEmitter } from 'events';
 import AppDispatcher from '../AppDispatcher'
 
-let _data = 'initial data';
+let properties = null;
 
-class SampleStore extends EventEmitter {
+class PropertyStore extends EventEmitter {
   constructor() {
     super();
-    
+
     AppDispatcher.register(action => {
       switch(action.type) {
-        case 'NEW_DATA':
-          _data = action.payload.data;
+        case 'GOT_ALL_PROPERTIES':
+          properties = action.payload.data;
           this.emit('CHANGE');
           break;
       }
@@ -25,9 +25,9 @@ class SampleStore extends EventEmitter {
     this.removeListener('CHANGE', cb);
   }
 
-  getData() {
-    return _data;
+  getAllProperties() {
+    return properties;
   }
 }
 
-export default new SampleStore();
+export default new PropertyStore();

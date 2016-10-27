@@ -32,7 +32,11 @@ require('./config/webpack')(app);
 
 app.use('/api', require('./routes/api'));
 
-app.get('/', (req, res) => {
-  let filepath = path.resolve('index.html');
-  res.sendFile(filepath);
+// app.get('/', (req, res) => {
+//   let filepath = path.resolve('index.html');
+//   res.sendFile(filepath);
+// });
+
+app.use("*", function(req, res) {
+  res.sendFile(path.join(__dirname, '../public/index.html'));
 });
