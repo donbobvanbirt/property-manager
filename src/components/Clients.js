@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Form, Button } from 'semantic-ui-react'
+import { browserHistory } from 'react-router'
 
 import PropertyStore from '../stores/PropertyStore';
 import PropertyActions from '../actions/PropertyActions'
@@ -52,6 +53,10 @@ export default class Clients extends Component {
     phone.value = '';
   }
 
+  selectProp(id) {
+    console.log('id:', id);
+  }
+
   render() {
     let { clients } = this.state;
     let list = 'loading...';
@@ -74,7 +79,7 @@ export default class Clients extends Component {
             {clients.map(unit => {
               let { contact, name, _id } = unit;
               return (
-                <Table.Row key={_id}>
+                <Table.Row key={_id} onClick={() => this.selectProp(_id)}>
                   <Table.Cell>{name.first} {name.last}</Table.Cell>
                   <Table.Cell>{contact.email}</Table.Cell>
                   <Table.Cell>{contact.phone}</Table.Cell>

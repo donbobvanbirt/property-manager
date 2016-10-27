@@ -12,6 +12,16 @@ const API = {
     .catch(console.error)
   },
 
+  getProperty(id) {
+    get(`/api/properties/${id}`)
+    .then(res => {
+      let { data } = res;
+      // console.log("data", data)
+      ServerActions.gotProperty(data);
+    })
+    .catch(console.error)
+  },
+
   getAllClients() {
     get('/api/clients')
     .then(res => {

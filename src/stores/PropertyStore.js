@@ -3,6 +3,7 @@ import AppDispatcher from '../AppDispatcher'
 
 let properties = null;
 let clients = null;
+let property = null;
 
 class PropertyStore extends EventEmitter {
   constructor() {
@@ -16,6 +17,10 @@ class PropertyStore extends EventEmitter {
           break;
         case 'GOT_ALL_CLIENTS':
           clients = action.payload.data;
+          this.emit('CHANGE');
+          break;
+        case 'GOT_PROPERTY':
+          property = action.payload.data;
           this.emit('CHANGE');
           break;
       }
@@ -32,6 +37,10 @@ class PropertyStore extends EventEmitter {
 
   getAllProperties() {
     return properties;
+  }
+
+  getProperty() {
+    return property;
   }
 
   getAllClients() {

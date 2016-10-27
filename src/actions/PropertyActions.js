@@ -5,6 +5,10 @@ const PropertyActions = {
     API.getAllProperties();
   },
 
+  getProperty(id) {
+    API.getProperty(id);
+  },
+
   addNewProp(obj) {
     API.addNewProp(obj);
   },

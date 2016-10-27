@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Table, Form, Button } from 'semantic-ui-react'
+import { browserHistory } from 'react-router'
 
 import PropertyStore from '../stores/PropertyStore';
 import PropertyActions from '../actions/PropertyActions'
@@ -47,6 +48,10 @@ export default class Properties extends Component {
     maxTenants.value = '';
   }
 
+  selectProp(id) {
+    browserHistory.push(`/property/${id}`)
+  }
+
   render() {
     let { properties } = this.state;
     let list = 'loading...';
@@ -70,7 +75,7 @@ export default class Properties extends Component {
             {properties.map(unit => {
               let { apt, bedrooms, rent, _id } = unit;
               return (
-                <Table.Row key={_id}>
+                <Table.Row key={_id} onClick={() => this.selectProp(_id)}>
                   <Table.Cell>{apt}</Table.Cell>
                   <Table.Cell>{bedrooms} bedrooms</Table.Cell>
                   <Table.Cell>{rent}</Table.Cell>
