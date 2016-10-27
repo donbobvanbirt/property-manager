@@ -12,13 +12,16 @@ export default class PropDetail extends Component {
     this.state = {
       property: PropertyStore.getProperty(),
       clients: PropertyStore.getAllClients(),
-      open: false
+      open: false,
+      selectedClient: null,
+      selectedClientName: 'Select:'
     }
     this._onChange = this._onChange.bind(this);
     this.deleteProp = this.deleteProp.bind(this);
     this.show = this.show.bind(this);
     this.close = this.close.bind(this);
     this.editProp = this.editProp.bind(this);
+    this.addNewTenant = this.addNewTenant.bind(this);
   }
 
   componentWillMount() {
@@ -62,6 +65,11 @@ export default class PropDetail extends Component {
     this.close();
   }
 
+  selectClient(id, name) {
+    this.setState({ selectedClient: id, selectedClientName: name })
+    console.log('id:', id)
+  }
+
   show() {
     this.setState({ open: true })
   }
@@ -70,8 +78,12 @@ export default class PropDetail extends Component {
     this.setState({ open: false })
   }
 
+  addNewTenant() {
+    PropertyActions.addNewTenant(this.state.property._id, this.state.selectedClient)
+  }
+
   render() {
-    let { property, clients, open } = this.state;
+    let { property, clients, open, selectedClientName } = this.state;
     let info = ['loading...'];
     let tenantList = ['Currently vacant'];
     let addTenant, editForm = '';
@@ -83,50 +95,52 @@ export default class PropDetail extends Component {
       if (tenants.length > 0) {
         tenantList = tenants.map(client => {
           let { name, contact } = client;
-          return `Name: ${name.first} ${name.last}, Email: ${contact.email}, Phone: ${contact.phone}`
+          return `${name.first} ${name.last}, Email: ${contact.email}, Phone: ${contact.phone}`
         })
       }
 
       if (maxTenants - tenants.length) {
         addTenant = (
           <div>
-            {/* <Header as='h3'>Add new tenant:</Header> */}
-            <Dropdown text='Add new tenant:'>
+            <Header as='h2'>Add new tenant:</Header>
+            <Dropdown text={selectedClientName}>
               <Dropdown.Menu>
 
                 {clients.map(client => {
-                  let { name } = client;
+                  let { name, _id } = client;
+                  let fullName = `${name.first} ${name.last}`;
                   return (
-                    <Dropdown.Item text={name.first} />
-
+                      <Dropdown.Item onClick={() => this.selectClient(_id, fullName)} text={fullName} key={_id}/>
                   )
                 })}
 
               </Dropdown.Menu>
             </Dropdown>
+            <br/>
+            <Button active={selectedClientName === 'Select:'} onClick={this.addNewTenant}>Add Tenant</Button>
           </div>
         )
       }
 
       editForm = (
-            <Form onSubmit={this.submitNewProp} success>
-              <Form.Field>
-                <label>Apartment Number</label>
-                <input name="aptNum" ref="aptNum" defaultValue={apt} />
-              </Form.Field>
-              <Form.Field>
-                <label>Bedrooms</label>
-                <input name="size" ref="size" defaultValue={bedrooms} />
-              </Form.Field>
-              <Form.Field>
-                <label>Monthly Rate</label>
-                <input name="rent" ref="rent" defaultValue={rent} />
-              </Form.Field>
-              <Form.Field>
-                <label>Maximum Tenants</label>
-                <input name="maxTenants" ref="maxTenants" defaultValue={maxTenants} />
-              </Form.Field>
-            </Form>
+        <Form onSubmit={this.submitNewProp} success>
+          <Form.Field>
+            <label>Apartment Number</label>
+            <input name="aptNum" ref="aptNum" defaultValue={apt} />
+          </Form.Field>
+          <Form.Field>
+            <label>Bedrooms</label>
+            <input name="size" ref="size" defaultValue={bedrooms} />
+          </Form.Field>
+          <Form.Field>
+            <label>Monthly Rate</label>
+            <input name="rent" ref="rent" defaultValue={rent} />
+          </Form.Field>
+          <Form.Field>
+            <label>Maximum Tenants</label>
+            <input name="maxTenants" ref="maxTenants" defaultValue={maxTenants} />
+          </Form.Field>
+        </Form>
       )
 
     }

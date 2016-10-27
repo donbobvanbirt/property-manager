@@ -1,4 +1,4 @@
-import axios, { get, post } from 'axios'
+import axios, { get, post, put } from 'axios'
 import ServerActions from './actions/ServerActions'
 
 const API = {
@@ -58,6 +58,16 @@ const API = {
       let { data } = res;
       // console.log("data", data)
       this.getAllProperties();
+    })
+    .catch(console.error)
+  },
+
+  addNewTenant(propId, clientId) {
+    put(`/api/properties/${propId}/addTenant/${clientId}`)
+    .then(res => {
+      let { data } = res;
+      console.log("data", data)
+      this.getProperty(propId);
     })
     .catch(console.error)
   },

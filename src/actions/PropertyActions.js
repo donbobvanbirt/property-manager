@@ -21,6 +21,10 @@ const PropertyActions = {
     API.editProp(obj, id);
   },
 
+  addNewTenant(propId, clientId) {
+    API.addNewTenant(propId, clientId);
+  },
+
   addNewClient(obj) {
     API.addNewClient(obj);
   },
