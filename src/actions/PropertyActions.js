@@ -13,6 +13,10 @@ const PropertyActions = {
     API.addNewProp(obj);
   },
 
+  deleteProp(obj) {
+    API.deleteProp(obj);
+  },
+
   addNewClient(obj) {
     API.addNewClient(obj);
   },

@@ -22,6 +22,16 @@ const API = {
     .catch(console.error)
   },
 
+  deleteProp(id) {
+    axios.delete(`/api/properties/${id}`)
+    .then(res => {
+      let { data } = res;
+      // console.log("data", data)
+      this.getAllProperties();
+    })
+    .catch(console.error)
+  },
+
   getAllClients() {
     get('/api/clients')
     .then(res => {

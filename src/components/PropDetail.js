@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Header } from 'semantic-ui-react'
+import { Header, Dropdown, Button } from 'semantic-ui-react'
+import { browserHistory } from 'react-router'
 
 import PropertyActions from '../actions/PropertyActions'
 import PropertyStore from '../stores/PropertyStore';
@@ -9,13 +10,16 @@ export default class PropDetail extends Component {
   constructor() {
     super();
     this.state = {
-      property: PropertyStore.getProperty()
+      property: PropertyStore.getProperty(),
+      clients: PropertyStore.getAllClients()
     }
     this._onChange = this._onChange.bind(this);
+    this.deleteProp = this.deleteProp.bind(this);
   }
 
   componentWillMount() {
     PropertyActions.getProperty(this.props.params.id);
+    PropertyActions.getAllClients();
     PropertyStore.startListening(this._onChange);
   }
 
@@ -25,15 +29,23 @@ export default class PropDetail extends Component {
 
   _onChange() {
     this.setState({
-      property: PropertyStore.getProperty()
+      property: PropertyStore.getProperty(),
+      clients: PropertyStore.getAllClients()
     })
   }
 
+  deleteProp() {
+    // console.log(this.state.property._id)
+    PropertyActions.deleteProp(this.state.property._id);
+    browserHistory.push('/properties');
+  }
+
   render() {
-    let { property } = this.state;
+    let { property, clients } = this.state;
     let info = ['loading...'];
     let tenantList = ['Currently vacant'];
-    console.log('property', property);
+    let addTenant = '';
+    console.log('clients', clients);
 
     if (property) {
       let { _id, apt, bedrooms, maxTenants, rent, tenants } = property;
@@ -44,6 +56,27 @@ export default class PropDetail extends Component {
           return `Name: ${name.first} ${name.last}, Email: ${contact.email}, Phone: ${contact.phone}`
         })
       }
+
+      if (maxTenants - tenants.length) {
+        addTenant = (
+          <div>
+            {/* <Header as='h3'>Add new tenant:</Header> */}
+            <Dropdown text='Add new tenant:'>
+              <Dropdown.Menu>
+
+                {clients.map(client => {
+                  let { name } = client;
+                  return (
+                    <Dropdown.Item text={name.first} />
+
+                  )
+                })}
+
+              </Dropdown.Menu>
+            </Dropdown>
+          </div>
+        )
+      }
     }
 
     return (
@@ -52,6 +85,9 @@ export default class PropDetail extends Component {
         <InfoList info={info} />
         <Header as='h2'>Tenants:</Header>
         <InfoList info={tenantList} />
+
+        {addTenant}
+        <Button onClick={this.deleteProp} floated='right' negative>Delete Property</Button>
       </div>
     )
   }
