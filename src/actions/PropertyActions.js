@@ -17,6 +17,10 @@ const PropertyActions = {
     API.deleteProp(obj);
   },
 
+  editProp(obj, id) {
+    API.editProp(obj, id);
+  },
+
   addNewClient(obj) {
     API.addNewClient(obj);
   },

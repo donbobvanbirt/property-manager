@@ -66,7 +66,7 @@ export default class Properties extends Component {
               <Table.HeaderCell>Apt Number</Table.HeaderCell>
               <Table.HeaderCell>Size</Table.HeaderCell>
               <Table.HeaderCell>Monthly Rate</Table.HeaderCell>
-              <Table.HeaderCell>Availability</Table.HeaderCell>
+              {/* <Table.HeaderCell>Availability</Table.HeaderCell> */}
             </Table.Row>
           </Table.Header>
 
@@ -79,7 +79,7 @@ export default class Properties extends Component {
                   <Table.Cell>{apt}</Table.Cell>
                   <Table.Cell>{bedrooms} bedrooms</Table.Cell>
                   <Table.Cell>{rent}</Table.Cell>
-                  <Table.Cell>No</Table.Cell>
+                  {/* <Table.Cell>No</Table.Cell> */}
                 </Table.Row>
               )
             })}

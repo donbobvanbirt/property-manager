@@ -32,6 +32,16 @@ const API = {
     .catch(console.error)
   },
 
+  editProp(obj, id) {
+    axios.put(`/api/properties/${id}`, obj)
+    .then(res => {
+      let { data } = res;
+      // console.log("data", data)
+      this.getProperty(id);
+    })
+    .catch(console.error)
+  },
+
   getAllClients() {
     get('/api/clients')
     .then(res => {

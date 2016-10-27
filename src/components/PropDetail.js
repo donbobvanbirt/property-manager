@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Header, Dropdown, Button } from 'semantic-ui-react'
+import { Header, Dropdown, Button, Modal, Icon, Form } from 'semantic-ui-react'
 import { browserHistory } from 'react-router'
 
 import PropertyActions from '../actions/PropertyActions'
@@ -11,10 +11,14 @@ export default class PropDetail extends Component {
     super();
     this.state = {
       property: PropertyStore.getProperty(),
-      clients: PropertyStore.getAllClients()
+      clients: PropertyStore.getAllClients(),
+      open: false
     }
     this._onChange = this._onChange.bind(this);
     this.deleteProp = this.deleteProp.bind(this);
+    this.show = this.show.bind(this);
+    this.close = this.close.bind(this);
+    this.editProp = this.editProp.bind(this);
   }
 
   componentWillMount() {
@@ -40,12 +44,38 @@ export default class PropDetail extends Component {
     browserHistory.push('/properties');
   }
 
+  editProp() {
+    let { _id } = this.state.property;
+    let { aptNum, rent, size, maxTenants } = this.refs;
+    let propObj = {
+      apt: aptNum.value,
+      rent: rent.value,
+      bedrooms: size.value,
+      maxTenants: maxTenants.value
+    }
+    PropertyActions.editProp(propObj, _id);
+    aptNum.value = '';
+    rent.value = '';
+    size.value = '';
+    maxTenants.value = '';
+
+    this.close();
+  }
+
+  show() {
+    this.setState({ open: true })
+  }
+
+  close() {
+    this.setState({ open: false })
+  }
+
   render() {
-    let { property, clients } = this.state;
+    let { property, clients, open } = this.state;
     let info = ['loading...'];
     let tenantList = ['Currently vacant'];
-    let addTenant = '';
-    console.log('clients', clients);
+    let addTenant, editForm = '';
+    console.log('property', property);
 
     if (property) {
       let { _id, apt, bedrooms, maxTenants, rent, tenants } = property;
@@ -77,6 +107,28 @@ export default class PropDetail extends Component {
           </div>
         )
       }
+
+      editForm = (
+            <Form onSubmit={this.submitNewProp} success>
+              <Form.Field>
+                <label>Apartment Number</label>
+                <input name="aptNum" ref="aptNum" defaultValue={apt} />
+              </Form.Field>
+              <Form.Field>
+                <label>Bedrooms</label>
+                <input name="size" ref="size" defaultValue={bedrooms} />
+              </Form.Field>
+              <Form.Field>
+                <label>Monthly Rate</label>
+                <input name="rent" ref="rent" defaultValue={rent} />
+              </Form.Field>
+              <Form.Field>
+                <label>Maximum Tenants</label>
+                <input name="maxTenants" ref="maxTenants" defaultValue={maxTenants} />
+              </Form.Field>
+            </Form>
+      )
+
     }
 
     return (
@@ -88,6 +140,23 @@ export default class PropDetail extends Component {
 
         {addTenant}
         <Button onClick={this.deleteProp} floated='right' negative>Delete Property</Button>
+        <Button onClick={this.show} floated='right' primary>Edit Property</Button>
+
+        <Modal size='small' open={open} onClose={this.close}>
+          <Modal.Header>
+            Edit Property
+          </Modal.Header>
+          <Modal.Content>
+
+            {editForm}
+
+          </Modal.Content>
+          <Modal.Actions>
+            <Button onClick={this.close}>Cancel</Button>
+            <Button onClick={this.editProp} positive>Submit</Button>
+          </Modal.Actions>
+        </Modal>
+
       </div>
     )
   }
