@@ -31,6 +31,14 @@ const PropertyActions = {
 
   getAllClients(obj) {
     API.getAllClients(obj);
+  },
+
+  getClientProp(id) {
+    API.getClientProp(id);
+  },
+
+  getClient(id) {
+    API.getClient(id);
   }
 }
 

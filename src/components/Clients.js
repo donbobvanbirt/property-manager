@@ -53,8 +53,8 @@ export default class Clients extends Component {
     phone.value = '';
   }
 
-  selectProp(id) {
-    console.log('id:', id);
+  selectClient(id) {
+    browserHistory.push(`/client/${id}`)
   }
 
   render() {
@@ -79,7 +79,7 @@ export default class Clients extends Component {
             {clients.map(unit => {
               let { contact, name, _id } = unit;
               return (
-                <Table.Row key={_id} onClick={() => this.selectProp(_id)}>
+                <Table.Row key={_id} onClick={() => this.selectClient(_id)}>
                   <Table.Cell>{name.first} {name.last}</Table.Cell>
                   <Table.Cell>{contact.email}</Table.Cell>
                   <Table.Cell>{contact.phone}</Table.Cell>

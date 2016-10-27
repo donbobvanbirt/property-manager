@@ -46,7 +46,7 @@ const API = {
     get('/api/clients')
     .then(res => {
       let { data } = res;
-      console.log("data", data)
+      // console.log("data", data)
       ServerActions.gotAllClients(data);
     })
     .catch(console.error)
@@ -66,8 +66,28 @@ const API = {
     put(`/api/properties/${propId}/addTenant/${clientId}`)
     .then(res => {
       let { data } = res;
-      console.log("data", data)
+      // console.log("data", data)
       this.getProperty(propId);
+    })
+    .catch(console.error)
+  },
+
+  getClient(id) {
+    get(`/api/clients/${id}`)
+    .then(res => {
+      let { data } = res;
+      // console.log("data", data)
+      ServerActions.gotClient(data);
+    })
+    .catch(console.error)
+  },
+
+  getClientProp(id) {
+    get(`/api/properties/clients/${id}`)
+    .then(res => {
+      let { data } = res;
+      // console.log("data", data)
+      ServerActions.gotClientProp(data);
     })
     .catch(console.error)
   },
