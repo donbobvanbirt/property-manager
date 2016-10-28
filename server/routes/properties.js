@@ -16,8 +16,6 @@ router.put('/:propId/addTenant/:clientId', (req, res) => {
     .catch(err => res.status(400).send(err))
 })
 
-
-
 router.route('/:id')
   .get((req, res) => {
     Property.findById(req.params.id)

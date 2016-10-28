@@ -11,8 +11,9 @@ router.route('/:id')
   })
 
   .put((req, res) => {
-    Client.findOneAndUpdate({_id: req.params.id}, { $set: req.body })
-    .then( res.send('client updated') )
+    Client.findOneAndUpdate({_id: req.params.id}, { $set: req.body }, { new: true })
+    // .then( res.send('client updated') )
+    .then(client => res.send(client))
     .catch(err => res.status(400).send(err))
   })
 
