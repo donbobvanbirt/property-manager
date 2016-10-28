@@ -2,9 +2,9 @@
   "name": "property-manager",
   "version": "1.0.0",
   "description": "",
-  "main": "server/app.js",
+  "main": "server/server.js",
   "scripts": {
-    "start": "node server/app.js"
+    "start": "node server/server.js"
   },
   "engines": {
     "node": "6"

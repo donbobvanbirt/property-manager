@@ -1,14 +1,16 @@
-require('dotenv').config();
 
-const PORT = process.env.PORT || 8000;
-const MONGODB_URI = process.env.DB_URL;
 
 const bodyParser = require('body-parser');
 const express = require('express');
 const http = require('http');
 const morgan = require('morgan');
 const path = require('path');
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+
+const config = require('./config/config');
+
+const NODE_ENV = process.env.NODE_ENV || 'development';
+const MONGODB_URI = config.db[NODE_ENV];
 
 // MONGOOSE CONFIGURATION
 mongoose.Promise = Promise;
@@ -17,11 +19,6 @@ mongoose.connect(MONGODB_URI, err => {
 });
 
 const app = express();
-const server = require('http').createServer(app);
-
-server.listen(PORT, err => {
-  console.log(err || `Express listening on port ${PORT}`);
-});
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
@@ -40,3 +37,5 @@ app.use('/api', require('./routes/api'));
 app.use("*", function(req, res) {
   res.sendFile(path.join(__dirname, '../public/index.html'));
 });
+
+module.exports = app;
